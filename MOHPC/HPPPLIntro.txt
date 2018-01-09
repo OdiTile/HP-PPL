@@ -1,0 +1,217 @@
+
+EXPORT MYPROG()
+BEGIN
+END;
+
+EXPORT PROG1()
+BEGIN
+MSG BOX("Hello world!");
+END;
+
+// This is an example of a "Hello world" in HP PPL
+EXPORT PROG1()
+BEGIN
+MSG BOX("Hello world!");
+END;
+
+EXPORT PROG1(name)
+BEGIN
+MSG BOX("Hello " + name +"!");
+END;
+
+EXPORT NameOfFunction(var1, var2, ..., var16)
+BEGIN
+// source code here
+END;
+
+LOCAL var1, var2; // creates two local variables named var1 and var2
+LOCAL var1=1, var2="Charlie"; // creates two local variables and set s their initial values
+LOCAL var1:=1, var2:="Charlie"; // same as above
+
+EXPORT PROG1(name)
+BEGIN
+LOC AL var1=1; // declare var1 as local and initialize to 1
+MSGBOX("Hello" + name + "!");
+// use either := or ▶ to assign values to a variable
+var1:=var1 + 1; // var1 now has value 2
+var1 * 2 ▶ var1; // var1 now has value 4
+// here is an example of declaring a local variable "as needed"
+// rather than placing it up at the top like var1
+LOCAL var2:="Reminder #" + var1 + ": Alice called today.";
+MSGBOX(var2);
+END;
+
+LOCAL var1, var2, var3; // declares var1, var2, and var3 as local to this source file; can be used by all programs defined below this line of code
+var4, var5, var6; // essentially the same as above; i.e., LOCAL is optional when declaring local variables for use within the entire source file
+EXPORT MAINPRG()
+BEGIN
+var 1:=var2+var3;
+var4:=1;
+END;
+SUBROUTINE()
+BEGIN
+LOC AL var7; // this local variable can only be used within SUBROUTINE()
+var7:=var4+var5-var1;
+END;
+
+EXPORT ANG(a)
+BEGIN
+a:= a/PI*180;
+RETURN(a);
+END;
+
+// program declarations
+THIRDANG();
+ANG();
+// THIRDANG(a, b)
+// Takes two angles a and b (in radians) of a triangle and
+// returns the third angle (in degrees)
+EXPORT THIRDANG(a,b)
+BEGIN
+LOC AL angle1, angle2;
+angle1:=ANG(a);
+angle2:=ANG(b);
+RETURN(180-angle1-angle2);
+END;
+// ANG(a)
+// Takes an angle a (in radians) and returns the same angle in degrees
+EXPORT ANG(a)
+BEGIN
+a:= a/PI*180;
+RETURN(a);
+END;
+
+// program declarations
+THIRDANG();
+ANG();
+// global variables
+EXPORT angle1, angle2;
+// THIRDANG(a, b)
+// Takes two angles a and b (in radians) of a triangle and
+// returns the third angle (in degrees)
+EXPORT THIRDANG(a,b)
+BEGIN
+angle1:=a;
+angle2:=b;
+ANG();
+RETURN (180-angle1-angle2);
+END;
+// ANG()
+// Converts angles stored in global variables angle1 and angle2 to degrees
+EXPORT ANG()
+BEGIN
+ang le1:=angle1/PI*180;
+angle2:=angle2/PI*180;
+END;
+
+// program declarations
+THIRDANG();
+ANG();
+// global variables are now local
+angle1, angle2;
+// THIRDANG(a, b)
+// Takes two angles a and b (in radians) of a triangle and
+// returns the third angle (in degrees)
+EXPORT THIRDANG(a,b)
+BEGIN
+ang le1:=a;
+angle2:=b;
+ANG();
+RETURN (180-angle1-angle2);
+END;
+// ANG()
+// Converts angles stored in global variables angle1 and angle2 to degrees
+ANG()
+BEGIN
+angle1:=angle1/PI*180;
+angle2:=angle2/PI*180;
+END;
+
+IF expression THEN
+// here is where we place commands which are executed if 'expression' is true
+END;
+
+ANG();
+// FINDANG(a,b)
+// determines the angle of a right triangle whose leg opposite of the angle
+// is b and whose leg adjacent to the angle is a; result is always in degre es
+EXPORT FINDANG(a,b)
+a:=ATAN(b/a); // re-use local variable a
+RETURN(ANG(a));
+END;
+ANG(a)
+BEGIN
+// if angle mode is radian, then the value of HAngle is 0
+// otherwise HAngle is 1 for degree mode
+IF HAngle==0 THEN
+a:=a/PI*180; // the value of a is interpreted to be in radians; convert to degrees
+END;
+RETU RN(a);
+END;
+
+ANG(a)
+BEGIN
+// notice the slight change from HAngle==0 to simply HAngle (equivalent to HAngle==1)
+IF HAngle THEN
+a:=a/PI*180; // the value of a is interpreted to be in radians; convert to degrees
+END;
+RETU RN(a);
+END;
+
+IF expression THEN
+// code for when 'expression' is true (non-zero)
+ELSE
+// code for when 'expression' is false (zero)
+END;
+
+// notice the lack of the semicolon ";" after MYPROG1()
+IF MYPROG1() THEN
+// code for which MYPROG1 returns a non-zero value
+END;
+
+CASE
+IF expression1 THEN
+// code if express ion1 is true
+// then resume execution at th e end of the CASE structure
+END;
+IF e xpression2 THEN
+// code if expression2 is true
+// then resume execution at th e end of the CASE structure
+END;
+// ...
+IF expressionN THEN
+// code if expressionN is true
+// then resume execution at th e end of the CASE structure
+END;
+DEFAULT
+// co de for when all previous cases fail
+// the "DEFAULT" keyword is optional as well as any commands which follow it
+END;
+
+EXPORT KMINPUT()
+BEGIN
+LOC AL run:=1, key;
+// change run to 0 to exit the while loop
+key:=WAIT(-1);
+CASE
+IF TYPE(key)==6 THEN
+// we have touchscreen events
+CASE
+IF key(1)==0 THEN kmMouseDown(); END;
+IF key(1)==1 THEN kmMouseUp(); END;
+// ... more mouse events
+IF key(1)==7 THEN kmMouse LongClick(); END;
+kmMouseEvent(); // default handler
+END;
+END; / / end of touch events
+// at this point, all touch events were handled due to the
+// TYPE(key)==6 check; so only key-presses are left
+// and if a touch event occurred, these tests below are
+// never reached
+IF key==0 THEN kmDoAppsKey(); END;
+// ... more key definitions here
+IF key==50 THEN kmDoPlusKey(); E ND;
+kmOtherEvents(); // handle all remaining undefined keys
+END;
+END;
+
